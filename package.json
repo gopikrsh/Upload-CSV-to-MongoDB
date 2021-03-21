@@ -1,0 +1,22 @@
+{
+  "name": "upload-csv-to-mongodb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gopikrsh/Upload-CSV-to-MongoDB.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gopikrsh/Upload-CSV-to-MongoDB/issues"
+  },
+  "homepage": "https://github.com/gopikrsh/Upload-CSV-to-MongoDB#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
