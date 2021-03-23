@@ -1,17 +1,25 @@
+const { Worker } = require('worker_threads')
+const os = require('os')
+
 const express = require('express')
-const app = express()
+const router = express.Router()
+const multer = require('multer')
+const csv = require('fast-csv')
+const fs = require('fs')
+const upload = multer({dest: 'temp/csv/' });
 
-app.listen(3000 , ()=>{
-    console.log("server started at port 3000");
+var app = express();
+//get the count of cpu's the computer has
+// const cpuCount = os.cpus().length;
+// console.log(cpuCount);
+
+//const workerScript = require('./sorter.js');
+
+
+app.use('/csv-file', require('./routes/uploadFile'));
+
+app.listen(3000, ()=>{
+    console.log('listening to server at port 3000');
 })
 
-const users = [
-    {
-        id: 111,
-        name : "SURESH",
-    }
-]
-app.get('/', function(req, res) {
-res.send(users);
 
-})
