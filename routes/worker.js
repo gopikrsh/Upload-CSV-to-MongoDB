@@ -19,16 +19,16 @@
 
        function run(workerData) {
           try {
-            // create an array of documents to insert
             const docs = workerData;
-            // this option prevents additional documents from being inserted if one fails
           docs.map(data =>{
+            //Inserting agents data in to mongodb
             Agent.findOneAndUpdate({agent_name:data.agent},
               {
                 agent_name : data.agent,
                 producer: data.producer
               },{new: true, upsert : true})
               .then((response) => {
+                 //Inserting policy data in to mongodb
                 Policy.findOneAndUpdate({policy_number:data.policy_number},
                   {
                       premium_amount: data.premium_amount,
@@ -43,6 +43,7 @@
                       agent_id: response.id
                   }, {new: true, upsert:true})
                   .then((response)=>{
+                     //Inserting User data in to mongodb
                     User.findOneAndUpdate({email:data.email},
                       {
                           email: data.email,
@@ -58,6 +59,7 @@
                       },
                       {new: true, upsert:true})
                       .then((response)=>{
+                         //Inserting user accounts data in to mongodb;
                         User_account.findOneAndUpdate({account_name: data.account_name},
                           {
                               account_name: data.account_name,
@@ -77,9 +79,12 @@
               .catch(error => console.log('error updating agent'+ error));
 
             }) 
+            return (console.log("Data inserted successfully"));
           }
         catch(err){
           console.log(err)
         }
       }
-      parentPort.postMessage(run(workerData));
+const result =  run(workerData);
+
+     parentPort.postMessage("job Done");

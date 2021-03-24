@@ -14,7 +14,7 @@ const LiveSchema = new Schema({
     time:String
 });
 
-const Post = mongoose.model('Post', PostSchema);
+const postMessage = mongoose.model('postMessage', PostSchema);
 const LivePost = mongoose.model('LivePost', LiveSchema);
 
-module.exports = {Post, LivePost};
+module.exports = {postMessage, LivePost};

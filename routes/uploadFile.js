@@ -36,12 +36,12 @@ async function run(csvData) {
     );
   
     // sort with multiple workers, based on the cpu count
-    const start3 = Date.now();
-    const result3 = await distributeLoadAcrossWorkers(cpuCount, count, csvData);
-    console.log(
-      `sorted ${result3} items, with ${cpuCount} workers in ${Date.now() - start3}ms`
-    );
-    console.log("\n done");
+    // const start3 = Date.now();
+    // const result3 = await distributeLoadAcrossWorkers(cpuCount, count, csvData);
+    // console.log(
+    //   `sorted ${result3} items, with ${cpuCount} workers in ${Date.now() - start3}ms`
+    // );
+    // console.log("\n done");
   }
 
 async function distributeLoadAcrossWorkers(workers, filecount, csvfile){
@@ -74,6 +74,7 @@ router.post('/', upload.single('file'), function (req, res) {
   .then(csvData => {
     run (csvData);
   })
+  res.send("file successfully uploaded");
 })
 
 module.exports = router;
