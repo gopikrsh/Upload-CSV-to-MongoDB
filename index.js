@@ -1,13 +1,5 @@
-const { Worker } = require('worker_threads')
-const os = require('os')
 
 const express = require('express')
-const router = express.Router()
-const multer = require('multer')
-const csv = require('fast-csv')
-const fs = require('fs')
-const upload = multer({dest: 'temp/csv/' });
-
 var app = express();
 //get the count of cpu's the computer has
 // const cpuCount = os.cpus().length;
@@ -15,7 +7,7 @@ var app = express();
 
 //const workerScript = require('./sorter.js');
 
-
+//require('./models/connection')();
 app.use('/csv-file', require('./routes/uploadFile'));
 
 app.listen(3000, ()=>{

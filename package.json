@@ -19,10 +19,8 @@
   "dependencies": {
     "csvtojson": "^2.0.10",
     "express": "^4.17.1",
-    "fast-csv": "^4.3.6",
-    "fs": "0.0.1-security",
+    "mongoose": "^5.12.2",
     "multer": "^1.4.2",
-    "slice-file": "^1.0.0",
     "worker-threads-pool": "^2.0.0"
   }
 }

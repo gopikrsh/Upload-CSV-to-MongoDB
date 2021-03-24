@@ -1,22 +1,17 @@
-// const { Worker, parentPort, workerData, isMainThread } = require('worker_threads')
-
+'use-strict'
  const express = require('express');
  const router = express.Router();
  const multer = require('multer')
- const csv = require('fast-csv')
  const csvtojson = require("csvtojson");
- const fs = require('fs')
  const upload = multer({dest: 'temp/csv/' });
- const os = require("os");
 
- var sf = require('slice-file');
+ const os = require("os");
  const cpuCount = os.cpus().length;
  const path = require("path");
 
  const workerScript = path.join(__dirname, "./worker.js");
-
-const Pool = require("worker-threads-pool");
-const pool = new Pool({ max: cpuCount });
+ const Pool = require("worker-threads-pool");
+ const pool = new Pool({ max: cpuCount });
 
 const sortArrayWithWorker = arr => {
 return new Promise((resolve, reject) => {
@@ -29,16 +24,6 @@ return new Promise((resolve, reject) => {
     });
   });
 };
-
-router.post('/', upload.single('file'), function (req, res) {
-  const csvfile = req.file.path;
-  let csvData;
-  csvtojson()
-  .fromFile(csvfile)
-  .then(csvData => {
-    run (csvData);
-  })
-})
 
 async function run(csvData) {
   const count = Object. keys(csvData). length;
@@ -56,16 +41,11 @@ async function run(csvData) {
     console.log(
       `sorted ${result3} items, with ${cpuCount} workers in ${Date.now() - start3}ms`
     );
-  
     console.log("\n done");
   }
- 
-
 
 async function distributeLoadAcrossWorkers(workers, filecount, csvfile){
   const segmentsPerWorker = Math.round( filecount/workers);
-  console.log("Hello00000", segmentsPerWorker);
-
   const promises = Array(workers)
   .fill()
   .map((_, index) => {
@@ -82,9 +62,18 @@ async function distributeLoadAcrossWorkers(workers, filecount, csvfile){
     }
    sortArrayWithWorker(arrayToSort)
   });
-  // merge all the segments of the array
- return await Promise.all(promises);
-//   return segmentsResults.reduce((acc, arr) => acc.concat(arr), []); 
+  
+ await Promise.all(promises);
+
  }
+
+router.post('/', upload.single('file'), function (req, res) {
+  const csvfile = req.file.path;
+  csvtojson()
+  .fromFile(csvfile)
+  .then(csvData => {
+    run (csvData);
+  })
+})
 
 module.exports = router;
