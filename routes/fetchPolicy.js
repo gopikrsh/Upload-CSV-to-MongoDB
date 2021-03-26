@@ -53,33 +53,9 @@ router.post('/', (req, res) =>{
 
 });
 
-// router.post('/agent', (req, res) =>{
-//     try{
-//         Agent.findOne({agent_name:req.body.agent_name})
-//         .then((response) => {
-//             Policy.find({agent_id:response.id})
-//             .then((response) => {
-//                 res.status(200).send(response);
-//             })
-//             .catch((error => {
-//                 console.log('Error fetching Policy(agent): '+ error);
-//                 res.status(400).send('Error fetching Policy');
-//             }))
-//         })
-//         .catch((error) => {
-//             console.log('Error fetching agent:'+error);
-//             res.status(400).send('Error fetching agent');
-//         })
-//     }
-//     catch(error)
-//     {
-//         res.status(500).send('Internal Server error');
-//         console.log('Server error: '+error);
-//     }
-// })
 router.post('/agent', (req, res) =>{
     try{
-        User.findOne({first_name:req.body.agent_name})
+        Agent.findOne({agent_name:req.body.agent_name})
         .then((response) => {
             Policy.find({agent_id:response.id})
             .then((response) => {
@@ -101,6 +77,30 @@ router.post('/agent', (req, res) =>{
         console.log('Server error: '+error);
     }
 })
+// router.post('/agent', (req, res) =>{
+//     try{
+//         User.findOne({first_name:req.body.agent_name})
+//         .then((response) => {
+//             Policy.find({agent_id:response.id})
+//             .then((response) => {
+//                 res.status(200).send(response);
+//             })
+//             .catch((error => {
+//                 console.log('Error fetching Policy(agent): '+ error);
+//                 res.status(400).send('Error fetching Policy');
+//             }))
+//         })
+//         .catch((error) => {
+//             console.log('Error fetching agent:'+error);
+//             res.status(400).send('Error fetching agent');
+//         })
+//     }
+//     catch(error)
+//     {
+//         res.status(500).send('Internal Server error');
+//         console.log('Server error: '+error);
+//     }
+// })
 
 
 module.exports = router;

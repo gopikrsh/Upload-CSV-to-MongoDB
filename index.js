@@ -3,13 +3,9 @@ const express = require('express')
 var app = express();
 const cron = require('node-cron');
 var osutil = require('node-os-utils')
-//get the count of cpu's the computer has
-// const cpuCount = os.cpus().length;
-// console.log(cpuCount); //check every second for CPU usage
-cpuUsageLimit = 70; //restart the node server on 70% usage of the CPU.
-//const workerScript = require('./sorter.js');
 
-//require('./models/connection')();
+cpuUsageLimit = 70; //restart the node server on 70% usage of the CPU.
+
 app.use('/csv-file', require('./routes/uploadFile'));
 
 app.use('/Policy', require('./routes/fetchPolicy'));
