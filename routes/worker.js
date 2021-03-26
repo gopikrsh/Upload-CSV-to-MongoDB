@@ -20,6 +20,7 @@
        function run(workerData) {
           try {
             const docs = workerData;
+            let insertedData = [];
           docs.map(data =>{
             //Inserting agents data in to mongodb
             Agent.findOneAndUpdate({agent_name:data.agent},
@@ -28,6 +29,8 @@
                 producer: data.producer
               },{new: true, upsert : true})
               .then((response) => {
+                console.log("inserted agent data succesfully");
+                insertedData.push(response.id);
                  //Inserting policy data in to mongodb
                 Policy.findOneAndUpdate({policy_number:data.policy_number},
                   {
@@ -43,6 +46,7 @@
                       agent_id: response.id
                   }, {new: true, upsert:true})
                   .then((response)=>{
+                    insertedData.push(response.id);
                      //Inserting User data in to mongodb
                     User.findOneAndUpdate({email:data.email},
                       {
@@ -67,6 +71,9 @@
                               user_policy_id: response.id
                           },
                           {new: true, upsert:true})
+                          .then((response) => {
+                            insertedData.push(response.id);
+                        })
                         .catch(error => console.log('error updating user account: '+ error))
 
                       })
@@ -79,12 +86,16 @@
               .catch(error => console.log('error updating agent'+ error));
 
             }) 
-            return (console.log("Data inserted successfully"));
+            return insertedData;
           }
         catch(err){
           console.log(err)
         }
       }
-const result =  run(workerData);
 
-     parentPort.postMessage("job Done");
+
+if (!isMainThread) {
+  // make sure we got an array of data
+  // we post a message through the parent port, to emit the "message" event
+  parentPort.postMessage(run(workerData));
+}

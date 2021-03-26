@@ -1,6 +1,7 @@
 'use-strict'
  const express = require('express');
- const router = express.Router();
+ const bodyParser = require('body-parser');
+ const router = express();
  const multer = require('multer')
  const csvtojson = require("csvtojson");
  const upload = multer({dest: 'temp/csv/' });
@@ -30,9 +31,9 @@ async function run(csvData) {
   
     //sort with a single worker
     const start = Date.now();
-    const result1 = await distributeLoadAcrossWorkers(1, count, csvData);
+    const result = await distributeLoadAcrossWorkers(1, count, csvData);
     console.log(
-      `sorted ${result1} items, with 1 worker in ${Date.now() - start}ms`
+      `sorted ${result} items, with 1 worker in ${Date.now() - start}ms`
     );
   
     // sort with multiple workers, based on the cpu count
@@ -60,21 +61,45 @@ async function distributeLoadAcrossWorkers(workers, filecount, csvfile){
       // intermediate segments
       arrayToSort = csvfile.slice(segmentsPerWorker * index,segmentsPerWorker * (index + 1))
     }
-   sortArrayWithWorker(arrayToSort)
+   return sortArrayWithWorker(arrayToSort)
   });
   
- await Promise.all(promises);
-
+  const segmentResults = await Promise.all(promises);
+  return segmentResults.reduce((acc, arr) => acc.concat(arr), []); 
  }
+ 
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use(bodyParser.json());
+
+// router.post('/', upload.single('file'), function (req, res) {
+//   try {
+//     const csvfile = req.file.path;
+//     csvtojson()
+//     .fromFile(csvfile)
+//     .then(csvData => {
+//       res.send(run (csvData));
+//     })
+//   } catch (err) {
+//     logger.error(err);
+//   }
+// })
 
 router.post('/', upload.single('file'), function (req, res) {
-  const csvfile = req.file.path;
-  csvtojson()
-  .fromFile(csvfile)
-  .then(csvData => {
-    run (csvData);
-  })
-  res.send("file successfully uploaded");
+  try {
+    if (!req.file)
+        return res.status(400).send('No files were uploaded.');
+
+    const csvfile = req.file.path;
+    csvtojson()
+    .fromFile(csvfile)
+    .then(csvData => {
+      const result = (run(csvData));
+      console.log("finally got the result", result);
+    })
+  } catch (err) {
+    logger.error(err);
+  }
 })
+
 
 module.exports = router;

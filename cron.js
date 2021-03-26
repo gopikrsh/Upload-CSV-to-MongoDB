@@ -1,8 +1,7 @@
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const {postMessage, LivePost} = require('./models/postSchema');
+const { PostMessage, MoveMessage } = require('./models/postSchema');
 const cron = require('node-cron');
 
 const router = express();
@@ -36,15 +35,24 @@ const myobj= {
     epochtime: timeStamp
 };
     
-postMessage.create(myobj, function(err, res) {
+PostMessage.create(myobj, function(err, res) {
     if (err) throw err;
     console.log("document inserted");
    });
 
-   var task = cron.schedule("*/1 * * * * *", () =>  {
+   var task = cron.schedule("*/10 * * * * *", () =>  {
+    PostMessage.find({epochtime:timeStamp})
+    .then((response) => {
+        response.forEach((responseValue) => {
+            delete responseValue._id;
+        })
+        MoveMessage.insertMany(response)
+        .then((response) => {
+            console.log('Transfered the Data from PostMessage: '+response);
+        })
+        .catch(error => console.log('error while moving data: '+error))
+    })
     console.log('stopped task');
-  }, {
-    scheduled: false
   });
   
    task.start();
