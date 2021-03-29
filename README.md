@@ -8,7 +8,7 @@ To run the app please follow the below steps.
 
 API functions 
 
-1. API URL : <baseurl>/csv-file
+1. API URL : baseurl/csv-file
    
    Method : POST 
    
@@ -16,7 +16,7 @@ API functions
   
   This Endpoint accepts csv file as a parameter, uploads the data in to MongoDB.
 
-2. API URL : <baseurl>/policy
+2. API URL : baseurl/policy
    
    Method : GET
    
@@ -27,7 +27,7 @@ API functions
   
   This Endpoint accepts first_name as parameter, query the database and returns the policy details of the customer.
    
-3. API URL : <baseurl>/policy/agent
+3. API URL : baseurl/policy/agent
    
    Method : GET
    
@@ -38,7 +38,7 @@ API functions
    
   This Endpoint accepts agent_name as parameter, query the database and returns all the policies mapped by the agent.
   
-4.  API URL : <baseurl>/runcron
+4.  API URL : baseurl/runcron
    
     Method : POST
    
