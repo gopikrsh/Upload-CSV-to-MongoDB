@@ -9,7 +9,9 @@ To run the app please follow the below steps.
 API functions 
 
 1. API URL : <baseurl>/csv-file
+   
    Method : POST 
+   
    Request Body Parameter : file
   
 This Endpoint accepts csv file as a parameter, uploads the data in to MongoDB.
