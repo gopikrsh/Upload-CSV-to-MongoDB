@@ -12,7 +12,7 @@ API functions
    
    Method : POST 
    
-   Request Body Parameter : file
+   Request Body Parameter : csv file
   
   This Endpoint accepts csv file as a parameter, uploads the data in to MongoDB.
 
