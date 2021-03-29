@@ -40,15 +40,15 @@ API functions
   
 4.  API URL : <baseurl>/runcron
    
-   Method : POST
+    Method : POST
    
-   Request Body Parameters : 
-   {
+    Request Body Parameters : 
+    {
       "Time": time,
       "Date": date,
       "Message": message
-   }
+    }
    
-  This Endpoint accepts time, date and message as parameter, Inserts the message in to a collection on a database and schedule a cron to transfer data from one collection to the  other.
+   This Endpoint accepts time, date and message as parameter, Inserts the message in to a collection on a database and schedule a cron to transfer data from one collection to the  other.
   
  
