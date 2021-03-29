@@ -8,19 +8,19 @@ const UserSchema = new Schema({
        required: true
    },
    first_name: {
-    type: String,
-    unique: true,
-    required: true
+        type: String,
+        unique: true,
+        required: true
     },
-   gender:String,
-   city: String,
-   phone: String,
-   address: String,
-   state: String,
-   zip: String,
-   dob: Date,
-   policy_id: String
-});
+        gender:String,
+        city: String,
+        phone: String,
+        address: String,
+        state: String,
+         zip: String,
+        dob: Date,
+        policy_id: String
+    });
 const User = mongoose.model('User', UserSchema);
 
 const User_accountSchema = new Schema({
@@ -59,16 +59,33 @@ const AgentSchema = new Schema({
     agent_name: {
         type: String,
         required: true,
-        unique:false
+        unique:true
     },
     producer: String
 });
 const Agent = mongoose.model('Agent', AgentSchema);
 
+const CategorySchema = new Schema({
+    category_name: {
+        type: String,
+        required: true
+    }
+});
+const Category = mongoose.model('Category', CategorySchema);
+
+const CarrierSchema = new Schema({
+    company_name: {
+        type: String,
+        required: true
+    },
+});
+const Carrier = mongoose.model('Carrier', CarrierSchema);
 
 module.exports = {
     User,
     User_account,
     Policy,
-    Agent
+    Agent,
+    Carrier,
+    Category
 };

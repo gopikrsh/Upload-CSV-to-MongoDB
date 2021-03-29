@@ -1,38 +1,39 @@
 'use-strict'
-const express = require('express')
+const express = require('express');
 var app = express();
-const cron = require('node-cron');
-var osutil = require('node-os-utils')
+var osutil = require('node-os-utils');
 
 cpuUsageLimit = 70; //restart the node server on 70% usage of the CPU.
 
+//API to fetch details from csv file and upload it to mongodb
 app.use('/csv-file', require('./routes/uploadFile'));
 
+//API to fetch policy details from mongodb
 app.use('/Policy', require('./routes/fetchPolicy'));
 
-app.use('/policy/aggregated', require('./routes/aggregatedPolicy'));
-
+//API to schedule cron jobs
 app.use('/runcron', require('./cron'));
 
-app.use('/cpu-util', require('./cpuUtilization'));
+//function to restart the server based on cpu utilization
+function serverRestart() {
 
-
-function serverRestart(){
-        var cpu = osutil.cpu
-        var count = cpu.count()
+    var cpu = osutil.cpu
+    var count = cpu.count()
         console.log("cpu count", count);
-        cpu.usage() 
-        .then(cpuPercentage => {
+    cpu.usage() 
+    .then(cpuPercentage => {
         console.log(cpuPercentage);
-        if(cpuPercentage > cpuUsageLimit){
-            console.log('High usage limit crossed, restarting the server');
-            process.exit();
-        }
-      })
-    }
 
-//setInterval(serverRestart, 1000);
+    if(cpuPercentage > cpuUsageLimit) {
+        console.log('High usage limit crossed, restarting the server');
+        process.exit();
+       }
+    })
+}
 
+setInterval(serverRestart, 1000);
+
+//connecting to server
 app.listen(3000, ()=>{
     console.log('listening to server at port 3000');
 })

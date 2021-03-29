@@ -8,13 +8,13 @@ const PostSchema = new Schema({
     epochtime:Number
 });
 
-const MoveSchema = new Schema({
+const LiveSchema = new Schema({
     message: String,
     date:String,
     time:String
 });
 
 const PostMessage = mongoose.model('PostMessage', PostSchema);
-const MoveMessage = mongoose.model('MoveMessage', MoveSchema);
+const LiveMessage = mongoose.model('LiveMessage', LiveSchema);
 
-module.exports = {PostMessage, MoveMessage};
+module.exports = {PostMessage, LiveMessage};
